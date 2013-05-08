@@ -42,7 +42,7 @@ static void fdf(const gsl_vector *x, void *params, double *f, gsl_vector *g)
   gsl_vector_set(g, 1, fy);
 }
 
-void minimize(double c[9], double *t, double *u, double *v)
+int minimize(double c[9], double *t, double *u, double *v)
 {
 //  const int itermax = 100;
   const int itermax = 10;
@@ -102,4 +102,6 @@ void minimize(double c[9], double *t, double *u, double *v)
 
   gsl_multimin_fdfminimizer_free(s);
   gsl_vector_free(x);
+
+  return status;
 }

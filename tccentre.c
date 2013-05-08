@@ -5,24 +5,39 @@
 
 int main (void)
 {
-  const int nx = 720;
-  const int ny = 360;
-  const int nr =  20;
-  const int dn =  10;
-
-  const int nnx = 2*dn+1;
-  const int nny = 2*dn+1;
-
   char fname[256];
-  float lon[nx], lat[ny];
-  float slp[nx*ny];
-  float llon[nnx], llat[nny];
-  float sslp[nnx*nny];
-  int i0, j0, is, js, ie, je, imin, jmin, kmin;
+  float *lon;
+  float *lat;
+  float *slp;
+  float *llon;
+  float *llat;
+  float *sslp;
+  int nx, ny, nr, dn, nnx, nny;
+  int i0, j0, is, js, ie, je, imin, jmin, kmin, status;
   float lon0, lat0;
   double c[9], f[9];
   double t, u, slpmin;
   float lonmin, latmin;
+
+  fprintf(stderr, "Horizontal resolution: nx ny =");
+  scanf("%d %d", &nx, &ny);
+  fprintf(stderr, "(nx, ny) = (%d, %d)\n", nx, ny);
+  lon = (float *)malloc(sizeof(float)*nx);
+  lat = (float *)malloc(sizeof(float)*ny);
+  slp = (float *)malloc(sizeof(float)*nx*ny);
+
+  fprintf(stderr, "Number of records: nr=");
+  scanf("%d", &nr);
+  fprintf(stderr, "nr = %d", nr);
+
+  fprintf(stderr, "Search half width =");
+  scanf("%d", &dn);
+  nnx = 2*dn+1;
+  nny = 2*dn+1;
+  fprintf(stderr, "Search domain = %d x %d", nnx, nny);
+  llon = (float *)malloc(sizeof(float)*nnx);
+  llat = (float *)malloc(sizeof(float)*nny);
+  sslp = (float *)malloc(sizeof(float)*nnx*nny);
 
   fprintf(stderr, "Enter path to longitudes: ");
   scanf("%s", fname);
@@ -38,7 +53,6 @@ int main (void)
   scanf("%s", fname);
   fprintf(stderr, "fname=%s\n", fname);
   
-
   fprintf(stderr, "Estimated centre lon lat =");
   scanf("%f %f", &lon0, &lat0);
 
@@ -97,7 +111,12 @@ int main (void)
       printf("c[%d]=%f\n", i, c[i]);
     }
 #endif
-    minimize(c, &t, &u, &slpmin);
+    status = minimize(c, &t, &u, &slpmin);
+    if (status!=0) {
+      t = 0.0;
+      u = 0.0;
+      slpmin = f[8];
+    }
     lonmin = llon[imin] + t*(llon[imin+1]-llon[imin-1]);  
     latmin = llat[jmin] + u*(llat[jmin+1]-llat[jmin-1]);  
     printf("%f %f %f\n", lonmin, latmin, slpmin);
