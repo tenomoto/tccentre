@@ -26,15 +26,15 @@ int main (void)
   lat = (float *)malloc(sizeof(float)*ny);
   slp = (float *)malloc(sizeof(float)*nx*ny);
 
-  fprintf(stderr, "Number of records: nr=");
+  fprintf(stderr, "Number of records: nr =");
   scanf("%d", &nr);
-  fprintf(stderr, "nr = %d", nr);
+  fprintf(stderr, "nr = %d\n", nr);
 
-  fprintf(stderr, "Search half width =");
+  fprintf(stderr, "Search half width in # grids =");
   scanf("%d", &dn);
   nnx = 2*dn+1;
   nny = 2*dn+1;
-  fprintf(stderr, "Search domain = %d x %d", nnx, nny);
+  fprintf(stderr, "Search domain = %d x %d\n", nnx, nny);
   llon = (float *)malloc(sizeof(float)*nnx);
   llat = (float *)malloc(sizeof(float)*nny);
   sslp = (float *)malloc(sizeof(float)*nnx*nny);
