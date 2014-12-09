@@ -58,13 +58,13 @@ int main (void)
 
   i0 = array_between(lon, nx, lon0);
   j0 = array_between(lat, ny, lat0);
-  fprintf(stderr, "%f %f %f\n", lon0, lat0, slp[nx*j0+i0]);
+  fprintf(stderr, "%f %f %f\n", lon[i0], lat[j0], slp[nx*j0+i0]);
 
   for (int r=0; r<nr; r++) {
     read_binary(fname, slp, nx*ny, r);
 #ifdef VERBOSE
     printf("%d: (i0,j0) = (%d, %d)\n", r, i0, j0);
-    printf("%f %f %f\n", lon0, lat0, slp[nx*j0+i0]);
+    printf("%f %f %f\n", lon[i0], lat[j0], slp[nx*j0+i0]);
 #endif
 
     is = i0 - dn;
